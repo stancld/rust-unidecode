@@ -15,9 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
-      - uses: messense/maturin-action@v1
         with:
           python-version: 3.10
+      - uses: messense/maturin-action@v1
 
       - name: Create package
         run: maturin build --release
@@ -32,9 +32,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
-      - uses: messense/maturin-action@v1
         with:
           python-version: 3.10
+      - uses: messense/maturin-action@v1
 
       - name: Create package
         run: maturin build --release
@@ -43,5 +43,5 @@ jobs:
         working-directory: target/wheels/
         run: |
           pip install *.whl
-          python -c "import fast_donalg"
+          python -c "import fast_unidecode"
           pip uninstall -y fast_unidecode
