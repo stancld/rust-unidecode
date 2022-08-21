@@ -26,7 +26,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, macOS-11 , windows-2022]
+        os: [ubuntu-20.04, macOS-11, windows-2022]
     timeout-minutes: 5
 
     steps:
@@ -42,6 +42,6 @@ jobs:
       - name: Install | Uninstall package
         working-directory: target/wheels/
         run: |
-          pip install *.whl
+          python -m pip install *.whl
           python -c "import fast_unidecode"
-          pip uninstall -y fast_unidecode
+          python -m pip uninstall -y fast_unidecode
