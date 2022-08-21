@@ -1,11 +1,10 @@
 [package]
-name = "unidecode"
-version = "0.3.0"
-authors = ["Amit Chowdhury <amitc97@gmail.com>"]
+name = "fast_unidecode"
+version = "0.1.0"
+edition = "2021"
+authors = ["Amit Chowdhury <amitc97@gmail.com>", "Daniel Stancl <daniek.stancl@gmail.com>"]
 description = "Provides pure ASCII transliterations of Unicode strings."
-documentation = "https://chowdhurya.github.io/rust-unidecode/unidecode/"
-homepage = "https://github.com/chowdhurya/rust-unidecode/"
-repository = "https://github.com/chowdhurya/rust-unidecode/"
+repository = "https://github.com/stancld/rust-unidecode/"
 readme = "README.md"
 keywords = [
   "unidecode",
@@ -15,3 +14,12 @@ keywords = [
   "transliteration"
 ]
 license = "BSD-3-Clause"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "fast_unidecode"
+crate-type = ["cdylib"]
+
+[dependencies.pyo3]
+version = "0.16.5"
+features = ["extension-module"]

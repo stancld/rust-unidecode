@@ -27,6 +27,11 @@
 mod data;
 use data::MAPPING;
 
+mod ascii_data;
+use ascii_data::ASCII_MAPPING;
+
+use pyo3::prelude::*;
+
 /// This function takes any Unicode string and returns an ASCII transliteration
 /// of that string.
 ///
@@ -52,8 +57,14 @@ use data::MAPPING;
 ///
 /// These guarantees/warnings are paraphrased from the original
 /// `Text::Unidecode` documentation.
+#[pyfunction]
 pub fn unidecode(s: &str) -> String {
-    s.chars().map(|ch| unidecode_char(ch)).collect()
+    if s.is_ascii() {
+        let s_str = s.to_string();
+        return s_str;
+    } else {
+        s.chars().map(|ch| unidecode_char(ch)).collect()
+    }
 }
 
 /// This function takes a single Unicode character and returns an ASCII
@@ -69,5 +80,15 @@ pub fn unidecode(s: &str) -> String {
 /// ```
 #[inline]
 pub fn unidecode_char(ch: char) -> &'static str {
-    MAPPING.get(ch as usize).map(|&s| s).unwrap_or("")
+    if ch.is_ascii() {
+        ASCII_MAPPING.get(ch as usize).map(|&s| s).unwrap_or("")
+    } else {
+        MAPPING.get(ch as usize).map(|&s| s).unwrap_or("")
+    }
+}
+
+#[pymodule]
+pub fn fast_unidecode(_py: Python, m: &PyModule) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(unidecode, m)?)?;
+    Ok(())
 }

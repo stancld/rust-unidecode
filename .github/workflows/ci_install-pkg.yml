@@ -1,0 +1,47 @@
+name: Install package
+
+# see: https://help.github.com/en/actions/reference/events-that-trigger-workflows
+on:  # Trigger the workflow on push or pull request, but only for the master branch
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  pkg-check:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - uses: messense/maturin-action@v1
+        with:
+          python-version: 3.10
+
+      - name: Create package
+        run: maturin build --release
+
+  pkg-install:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, macOS-11 , windows-2022]
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - uses: messense/maturin-action@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Create package
+        run: maturin build --release
+
+      - name: Install | Uninstall package
+        working-directory: target
+        run: |
+          pip install *.whl
+          python -c "import fast_donalg"
+          pip uninstall -y fast_unidecode
