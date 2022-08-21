@@ -1,4 +1,4 @@
-# PyO3 -- Unicode
+# Python -- fast_unidecode
 
 
 This repo is a fork of the [`rust-unicode`](https://github.com/chowdhurya/rust-unidecode)
