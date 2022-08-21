@@ -22,7 +22,7 @@ jobs:
 
       - name: Install Maturin
         run: |
-          yum install -y maturin
+          python -m pip install maturin
 
       - name: Build manilinux2010 package (${{ matrix.python-version }})
         run: |
