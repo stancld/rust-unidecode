@@ -1,4 +1,4 @@
-# Python -- fast_unidecode
+# Python Fast Unidecode
 
 <div align="center">
 
