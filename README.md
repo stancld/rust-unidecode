@@ -50,6 +50,7 @@ pip install target/wheels/fast_unidecode...
 
 >>> print(unidecode("Æneid")
 'AEneid'
+
 >>> print(unidecode("北亰"))
 'Bei Jing'
 ```
