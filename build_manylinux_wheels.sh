@@ -10,4 +10,5 @@ for PYBIN in /opt/python/{cp38-cp38,cp39-cp39,cp310-cp310}/bin; do
     "${PYBIN}/pip" install maturin
 
     ${PYTHON_SYS_EXECUTABLE} -m maturin build --release
+    alias python=${PYTHON_SYS_EXECUTABLE}
 done
