@@ -8,21 +8,23 @@ on:  # Trigger the workflow on push or pull request, but only for the main branc
     branches: [master]
 
 jobs:
-  build_wheels:
+  build_macos_wheels:
   runs-on: ${{ matrix.os }}
   strategy:
     matrix:
-      os: [ubuntu-20.04, macOS-11, windows-2022]
+      os: [macOS-11]
       python: ["3.8", "3.9", "3.10"]
-      architecture: [x86, x64]
+      architecture: [x86_64, "aarch64"]
 
   steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python }}
-        architecture:
+        architecture: ${{ matrix.architecture }}
     - uses: messense/maturin-action@v1
 
     - name: Build package with maturin
-      run: maturin build --release
+      run: |
+        maturin build --release
+        ls -lh target/wheels/
