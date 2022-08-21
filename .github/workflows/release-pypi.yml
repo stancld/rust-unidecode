@@ -19,7 +19,7 @@ jobs:
     steps:
       # v1 is required when using manylinux2010
       - uses: actions/checkout@v1
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
       - uses: messense/maturin-action@v1
