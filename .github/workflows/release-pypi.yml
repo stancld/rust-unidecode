@@ -8,34 +8,12 @@ on:  # Trigger the workflow on push or pull request, but only for the main branc
     branches: [master]
 
 jobs:
-  builds-wheels-manylinux:
-    runs-on: ubuntu-20.04
-    name: Build wheels for manilinux
-    container: quay.io/pypa/manylinux2010_x86_64
-    strategy:
-      matrix:
-        python: ["3.8", "3.9", "3.10"]
-
-    steps:
-      # v1 is required when using manylinux2010
-      - uses: actions/checkout@v1
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python }}
-      - uses: messense/maturin-action@v1
-
-      - name: Build Linux package on (${{ matrix.python }})
-        run: |
-          maturin build --release
-          ls -lh target/wheels/
-
   build-wheels-windows-32bit:
     runs-on: windows-2022
     name: Build wheels for Windows 32bit
     strategy:
       matrix:
         python: ["3.8", "3.9", "3.10"]
-        rust: [stable]
 
     steps:
       - uses: actions/checkout@v3
@@ -63,7 +41,6 @@ jobs:
     strategy:
       matrix:
         python: ["3.8", "3.9", "3.10"]
-        rust: [stable]
 
     steps:
       - uses: actions/checkout@v3
@@ -84,3 +61,13 @@ jobs:
         run: |
           maturin build --release
           ls -lh target/wheels/
+
+  pypi-upload:
+    runs-on: ubuntu-20.04
+    name: Upload wheels to PyPI
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Upload wheels to PyPI
+        run: |
+          ls -lh target/wheels
