@@ -1,9 +1,62 @@
-rust-unidecode
-==============
+# Python Fast Unidecode
 
-[![Build Status](https://img.shields.io/travis/chowdhurya/rust-unidecode/master.svg?style=flat-square)](https://travis-ci.org/chowdhurya/rust-unidecode)
-[![Cargo version](https://img.shields.io/crates/v/unidecode.svg?style=flat-square)](https://crates.io/crates/unidecode)
-[![License](https://img.shields.io/crates/l/unidecode.svg?style=flat-square)](https://github.com/chowdhurya/rust-unidecode/blob/master/LICENSE)
+<div align="center">
+
+[![Build](https://github.com/stancld/rust-unidecode/actions/workflows/ci_install-pkg.yml/badge.svg?branch=master&event=push)](https://github.com/stancld/rust-unidecode/actions/workflows/ci_install-pkg.yml)
+[![Python version](https://img.shields.io/badge/python-3.8%7C3.9%7C3.10-blue)](https://img.shields.io/badge/python-3.8%7C3.9%7C3.10-blue)
+[![Rust tests](https://github.com/stancld/rust-unidecode/actions/workflows/ci_test.yml/badge.svg?branch=master&event=push)](https://github.com/stancld/rust-unidecode/actions/workflows/ci_test.yml)
+[![Python tests](https://github.com/stancld/rust-unidecode/actions/workflows/ci_python-test.yml/badge.svg?branch=master&event=push)](https://github.com/stancld/rust-unidecode/actions/workflows/ci_python-test.yml)
+[![License](https://img.shields.io/crates/l/unidecode.svg?style=flat-square)](https://github.com/stancld/rust-unidecode/blob/master/LICENSE)
+
+______________________________________________________________________
+</div>
+
+
+
+This repo is a fork of the [`rust-unicode`](https://github.com/chowdhurya/rust-unidecode)
+repository and transports the original Rust implementation to be used with Python.
+It also implements a couple of source code changes to hasten a translation of
+ASCII family of characters and makes this implementation on par with [Python unidecode
+implementation](https://github.com/avian2/unidecode) on this set of characters.
+
+The overall result is this package should provide you with the same output
+as the aforementioned Python implementation, but is much faster on a translation of
+non-ASCII characters (>4x) and slightly faster on ASCII characters (in a degree of several percents) on average based on
+the [test_speedup.py](./test_speedup.py) benchmark (depending on caching, etc.; sometimes, a translation of
+non-ASCII characters provides you with a speedup of up to 100x).
+
+## Installation
+
+```bash
+pip install fast_unidecode
+```
+
+<details>
+  <summary> Installation from source </summary>
+
+First, you need to build the package using [`maturin`](https://github.com/PyO3/maturin),
+then install `fast_unidecode` simply with `pip`.
+
+```bash
+maturin build --release
+pip install target/wheels/fast_unidecode...
+```
+</details>
+
+## Usage
+
+```python
+>>> from fast_unidecode import unidecode
+
+>>> print(unidecode("Æneid")
+'AEneid'
+>>> print(unidecode("北亰"))
+'Bei Jing'
+```
+
+
+<details>
+  <summary> rust-unidecode (Original README.md) </summary>
 
 [Documentation](https://docs.rs/unidecode/)
 
@@ -55,3 +108,5 @@ There are, however, some things you should keep in mind:
 
 This information was paraphrased from the original `Text::Unidecode`
 documentation.
+
+</details>
