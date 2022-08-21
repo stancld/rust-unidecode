@@ -65,6 +65,8 @@ jobs:
   pypi-upload:
     runs-on: ubuntu-20.04
     name: Upload wheels to PyPI
+    needs: [build-wheels-windows-32bit, build-wheels-windows-64bit]
+
     steps:
       - uses: actions/checkout@v3
 
