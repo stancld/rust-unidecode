@@ -18,10 +18,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Install Maturin
-        run: |
-          for PYBIN in /opt/python/{cp38-cp38,cp39-cp39,cp310-cp310}/bin; do
-            export PYTHON_SYS_EXECUTABLE="$PYBIN/python"
-          "${PYBIN}/pip" install
+        run: sh build_manylinux_wheels.sh
 
       - name: Build manylinux2010 package (${{ matrix.python-version }})
         run: |
