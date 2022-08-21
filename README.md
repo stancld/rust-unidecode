@@ -48,7 +48,7 @@ pip install target/wheels/fast_unidecode...
 ```python
 >>> from fast_unidecode import unidecode
 
->>> print(unidecode("Æneid")
+>>> print(unidecode("Æneid"))
 'AEneid'
 
 >>> print(unidecode("北亰"))
