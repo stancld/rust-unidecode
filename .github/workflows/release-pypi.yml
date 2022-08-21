@@ -9,20 +9,22 @@ on:  # Trigger the workflow on push or pull request, but only for the main branc
 
 jobs:
   build-macos-wheels:
-  runs-on: ${{ matrix.os }}
-  strategy:
-    matrix:
-      os: [macOS-11]
-      python-version: ["3.8", "3.9", "3.10"]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macOS-11]
+        python: ["3.8", "3.9", "3.10"]
+        architecture: [x86_64, aarch64]
 
-  steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-    - uses: messense/maturin-action@v1
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+          architecture: ${{ matrix.architecture }}
+      - uses: messense/maturin-action@v1
 
-    - name: Build ${{ matrix.os }} package (${{ matrix.python-version }})
-      run: |
-        maturin build --release
-        ls -lh target/wheels/
+      - name: Build ${{ matrix.os }} package on ${{ matrix.architecture }} (${{ matrix.python }})
+        run: |
+          maturin build --release
+          ls -lh target/wheels/
