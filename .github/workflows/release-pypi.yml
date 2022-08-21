@@ -20,15 +20,9 @@ jobs:
       # v1 is required when using manylinux2010
       - uses: actions/checkout@v1
 
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-
       - name: Install Maturin
         run: |
-          yum install maturin
+          yum install -y maturin
 
       - name: Build manilinux2010 package (${{ matrix.python-version }})
         run: |
