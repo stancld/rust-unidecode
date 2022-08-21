@@ -1,5 +1,5 @@
-extern crate unidecode;
-use unidecode::{unidecode, unidecode_char};
+extern crate fast_unidecode;
+use fast_unidecode::{unidecode, unidecode_char};
 
 // Tests that every character outputted by the unidecode() function is valid
 // ASCII.

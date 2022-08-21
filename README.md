@@ -4,6 +4,7 @@
 
 [![Build](https://github.com/stancld/rust-unidecode/actions/workflows/ci_install-pkg.yml/badge.svg?branch=master&event=push)](https://github.com/stancld/rust-unidecode/actions/workflows/ci_install-pkg.yml)
 [![Python version](https://img.shields.io/badge/python-3.8%7C3.9%7C3.10-blue)](https://img.shields.io/badge/python-3.8%7C3.9%7C3.10-blue)
+[![Rust tests](https://github.com/stancld/rust-unidecode/actions/workflows/ci_test.yml/badge.svg?branch=master&event=push)](https://github.com/stancld/rust-unidecode/actions/workflows/ci_test.yml)
 [![License](https://img.shields.io/crates/l/unidecode.svg?style=flat-square)](https://github.com/stancld/rust-unidecode/blob/master/LICENSE)
 
 ______________________________________________________________________

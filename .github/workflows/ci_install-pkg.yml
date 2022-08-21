@@ -1,4 +1,4 @@
-name: Install package
+name: Build
 
 # see: https://help.github.com/en/actions/reference/events-that-trigger-workflows
 on:  # Trigger the workflow on push or pull request, but only for the master branch
@@ -10,7 +10,7 @@ on:  # Trigger the workflow on push or pull request, but only for the master bra
 jobs:
   pkg-check:
     runs-on: ubuntu-20.04
-    timeout-minutes: 10
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04, macOS-11 , windows-2022]
-    timeout-minutes: 10
+    timeout-minutes: 5
 
     steps:
       - uses: actions/checkout@v3
