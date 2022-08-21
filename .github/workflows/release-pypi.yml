@@ -12,9 +12,6 @@ jobs:
     runs-on: ubuntu-20.04
     name: Build wheels for Manylinux2010
     container: quay.io/pypa/manylinux2010_x86_64
-    strategy:
-      matrix:
-        python-version: ["38", "39", "310"]
 
     steps:
       # v1 is required when using manylinux2010
@@ -22,10 +19,11 @@ jobs:
 
       - name: Install Maturin
         run: |
-          PYBIN=/opt/python/cp${{ os.python-verion }}
-          ${PYBIN}/pip install maturin
+          for PYBIN in /opt/python/{cp38-cp38,cp39-cp39,cp310-cp310}/bin; do
+            export PYTHON_SYS_EXECUTABLE="$PYBIN/python"
+          "${PYBIN}/pip" install
 
-      - name: Build manilinux2010 package (${{ matrix.python-version }})
+      - name: Build manylinux2010 package (${{ matrix.python-version }})
         run: |
           maturin build --release
 
