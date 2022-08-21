@@ -17,12 +17,8 @@ jobs:
       # v1 is required when using manylinux2010
       - uses: actions/checkout@v1
 
-      - name: Install Maturin
+      - name: Install Maturin and Build manylinux2010 package (${{ matrix.python-version }})
         run: sh build_manylinux_wheels.sh
-
-      - name: Build manylinux2010 package (${{ matrix.python-version }})
-        run: |
-          maturin build --release
 
   build-wheels-windows-32bit:
     runs-on: windows-2022
