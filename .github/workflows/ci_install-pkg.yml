@@ -40,7 +40,7 @@ jobs:
         run: maturin build --release
 
       - name: Install | Uninstall package
-        working-directory: target
+        working-directory: target/wheels/
         run: |
           pip install *.whl
           python -c "import fast_donalg"
