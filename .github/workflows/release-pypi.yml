@@ -20,67 +20,67 @@ jobs:
       - name: Install Maturin and Build manylinux2010 packages
         run: sh build_manylinux_wheels.sh
 
-  # build-wheels-windows-32bit:
-  #   runs-on: windows-2022
-  #   name: Build wheels for Windows 32bit
-  #   strategy:
-  #     matrix:
-  #       python: ["3.8", "3.9", "3.10"]
+  build-wheels-windows-32bit:
+    runs-on: windows-2022
+    name: Build wheels for Windows 32bit
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10"]
 
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-python@v4
-  #       with:
-  #         python-version: ${{ matrix.python }}
-  #         architecture: x86
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+          architecture: x86
 
-  #     - name: Install Rust
-  #       uses: actions-rs/toolchain@v1
-  #       with:
-  #         toolchain: stable-i686-pc-windows-msvc
-  #         override: true
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable-i686-pc-windows-msvc
+          override: true
 
-  #     - uses: messense/maturin-action@v1
+      - uses: messense/maturin-action@v1
 
-  #     - name: Build windows-2022 package on 32bit (${{ matrix.python-version }})
-  #       run: |
-  #         maturin build --release
+      - name: Build windows-2022 package on 32bit (${{ matrix.python-version }})
+        run: |
+          maturin build --release
 
-  # build-wheels-others-64bit:
-  #   runs-on: ${{ matrix.os }}
-  #   name: Build wheels for MacOS/Windows 64bit
-  #   strategy:
-  #     matrix:
-  #       os: [macOS-11, windows-2022]
-  #       python: ["3.8", "3.9", "3.10"]
+  build-wheels-others-64bit:
+    runs-on: ${{ matrix.os }}
+    name: Build wheels for MacOS/Windows 64bit
+    strategy:
+      matrix:
+        os: [macOS-11, windows-2022]
+        python: ["3.8", "3.9", "3.10"]
 
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-python@v4
-  #       with:
-  #         python-version: ${{ matrix.python }}
-  #         architecture: x64
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+          architecture: x64
 
-  #     - name: Install Rust
-  #       uses: actions-rs/toolchain@v1
-  #       with:
-  #         toolchain: stable
-  #         override: true
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
 
-  #     - uses: messense/maturin-action@v1
+      - uses: messense/maturin-action@v1
 
-  #     - name: Build ${{ matrix.os }} package on 64bit (${{ matrix.python-version }})
-  #       run: |
-  #         maturin build --release
+      - name: Build ${{ matrix.os }} package on 64bit (${{ matrix.python-version }})
+        run: |
+          maturin build --release
 
-  # pypi-upload:
-  #   runs-on: ubuntu-20.04
-  #   name: Upload wheels to PyPI
-  #   needs: [build-wheels-manylinux, build-wheels-windows-32bit, build-wheels-others-64bit]
+  pypi-upload:
+    runs-on: ubuntu-20.04
+    name: Upload wheels to PyPI
+    needs: [build-wheels-manylinux, build-wheels-windows-32bit, build-wheels-others-64bit]
 
-  #   steps:
-  #     - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-  #     - name: Upload wheels to PyPI
-  #       run: |
-  #         ls -lh target/wheels
+      - name: Upload wheels to PyPI
+        run: |
+          ls -lh target/wheels
