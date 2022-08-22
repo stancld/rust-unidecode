@@ -80,3 +80,28 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: ./target/wheels/*whl
+
+  publish-package:
+    runs-on: ubuntu-20.04
+    needs: [build-wheels-manylinux, build-wheels-windows-32bit, build-wheels-others-64bit]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v2
+        with:
+          path: ./target/wheels/*whl
+      - run: ls -lh ./target/wheels
+
+      - name: Delay releasing
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        uses: juliangruber/sleep-action@v1
+        with:
+          time: 1m
+
+      - name: Publish package to Test PyPI
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        uses: pypa/gh-action-pypi-publish@v1.5.1
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+          verbose: True
