@@ -43,8 +43,11 @@ jobs:
       - uses: messense/maturin-action@v1
 
       - name: Build windows-2022 package on 32bit (${{ matrix.python-version }})
-        run: |
-          maturin build --release
+        run: maturin build --release
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v3
+        with: ./target/wheels/*whl
 
   build-wheels-others-64bit:
     runs-on: ${{ matrix.os }}
@@ -70,17 +73,8 @@ jobs:
       - uses: messense/maturin-action@v1
 
       - name: Build ${{ matrix.os }} package on 64bit (${{ matrix.python-version }})
-        run: |
-          maturin build --release
-
-  pypi-upload:
-    runs-on: ubuntu-20.04
-    name: Upload wheels to PyPI
-    needs: [build-wheels-manylinux, build-wheels-windows-32bit, build-wheels-others-64bit]
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Upload wheels to PyPI
-        run: |
-          ls -lh target/wheels
+        run: maturin build --release
+      
+      - name: Upload wheels
+        uses: actions/upload-artifact@v3
+        with: ./target/wheels/*whl
