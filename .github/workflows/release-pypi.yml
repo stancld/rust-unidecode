@@ -47,7 +47,8 @@ jobs:
 
       - name: Upload wheels
         uses: actions/upload-artifact@v3
-        with: ./target/wheels/*whl
+        with:
+          path: ./target/wheels/*whl
 
   build-wheels-others-64bit:
     runs-on: ${{ matrix.os }}
@@ -77,4 +78,5 @@ jobs:
       
       - name: Upload wheels
         uses: actions/upload-artifact@v3
-        with: ./target/wheels/*whl
+        with:
+          path: ./target/wheels/*whl
