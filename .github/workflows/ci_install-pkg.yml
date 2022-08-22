@@ -8,20 +8,6 @@ on:  # Trigger the workflow on push or pull request, but only for the master bra
     branches: [master]
 
 jobs:
-  pkg-check:
-    runs-on: ubuntu-20.04
-    timeout-minutes: 5
-
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-      - uses: messense/maturin-action@v1
-
-      - name: Build package with maturin
-        run: maturin build --release
-
   pkg-install:
     runs-on: ${{ matrix.os }}
     strategy:

@@ -1,0 +1,107 @@
+name: PyPI Release
+
+# https://help.github.com/en/actions/reference/events-that-trigger-workflows
+on:  # Trigger the workflow on push or pull request, but only for the main branch
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-wheels-manylinux:
+    runs-on: ubuntu-20.04
+    name: Build wheels for Manylinux2010
+    container: quay.io/pypa/manylinux2010_x86_64
+
+    steps:
+      # v1 is required when using manylinux2010
+      - uses: actions/checkout@v1
+
+      - name: Install Maturin and Build manylinux2010 packages
+        run: sh build_manylinux_wheels.sh
+
+  build-wheels-windows-32bit:
+    runs-on: windows-2022
+    name: Build wheels for Windows 32bit
+    strategy:
+      matrix:
+        python: ["3.8", "3.9", "3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+          architecture: x86
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable-i686-pc-windows-msvc
+          override: true
+
+      - uses: messense/maturin-action@v1
+
+      - name: Build windows-2022 package on 32bit (${{ matrix.python-version }})
+        run: maturin build --release
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./target/wheels/*whl
+
+  build-wheels-others-64bit:
+    runs-on: ${{ matrix.os }}
+    name: Build wheels for MacOS/Windows 64bit
+    strategy:
+      matrix:
+        os: [macOS-11, windows-2022]
+        python: ["3.8", "3.9", "3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+          architecture: x64
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - uses: messense/maturin-action@v1
+
+      - name: Build ${{ matrix.os }} package on 64bit (${{ matrix.python-version }})
+        run: maturin build --release
+      
+      - name: Upload wheels
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./target/wheels/*whl
+
+  publish-package:
+    runs-on: ubuntu-20.04
+    needs: [build-wheels-manylinux, build-wheels-windows-32bit, build-wheels-others-64bit]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v2
+        with:
+          path: ./target/wheels/*whl
+      - run: ls -lh ./target/wheels
+
+      - name: Delay releasing
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        uses: juliangruber/sleep-action@v1
+        with:
+          time: 1m
+
+      - name: Publish package to Test PyPI
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        uses: pypa/gh-action-pypi-publish@v1.5.1
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+          verbose: True
