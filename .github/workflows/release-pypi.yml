@@ -9,9 +9,9 @@ on:
     types: [published]
 
 jobs:
-  build-wheels-manylinux:
+  build-wheels-manylinux-x86_64:
     runs-on: ubuntu-24.04
-    name: Build wheels for manylinux
+    name: Build wheels for manylinux (x86_64)
     container: quay.io/pypa/manylinux_2_28_x86_64
 
     steps:
@@ -23,7 +23,24 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: manylinux-wheels
+          name: manylinux-wheels-x86_64
+          path: ./target/wheels/*whl
+
+  build-wheels-manylinux-aarch64:
+    runs-on: ubuntu-24.04-arm
+    name: Build wheels for manylinux (aarch64)
+    container: quay.io/pypa/manylinux_2_28_aarch64
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Install Maturin and Build manylinux2014 packages
+        run: sh build_manylinux_wheels.sh
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: manylinux-wheels-aarch64
           path: ./target/wheels/*whl
 
   build-wheels-macos:
@@ -61,7 +78,7 @@ jobs:
   publish-to-pypi:
     name: Publish to PyPI
     runs-on: ubuntu-24.04
-    needs: [build-wheels-manylinux, build-wheels-macos]
+    needs: [build-wheels-manylinux-x86_64, build-wheels-manylinux-aarch64, build-wheels-macos]
     if: github.event_name == 'release' && github.event.action == 'published'
 
     steps:
