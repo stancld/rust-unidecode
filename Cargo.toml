@@ -1,6 +1,6 @@
 [package]
 name = "fast_unidecode"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2024"
 authors = ["Daniel Stancl <daniel.stancl@gmail.com>", "Amit Chowdhury <amitc97@gmail.com>"]
 description = "Provides pure ASCII transliterations of Unicode strings."
@@ -16,7 +16,6 @@ keywords = [
 ]
 classifiers = [
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13"
