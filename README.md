@@ -1,9 +1,70 @@
-rust-unidecode
-==============
+# Python Fast Unidecode
 
-[![Build Status](https://img.shields.io/travis/chowdhurya/rust-unidecode/master.svg?style=flat-square)](https://travis-ci.org/chowdhurya/rust-unidecode)
-[![Cargo version](https://img.shields.io/crates/v/unidecode.svg?style=flat-square)](https://crates.io/crates/unidecode)
-[![License](https://img.shields.io/crates/l/unidecode.svg?style=flat-square)](https://github.com/chowdhurya/rust-unidecode/blob/master/LICENSE)
+<div align="center">
+
+[![Build](https://github.com/stancld/rust-unidecode/actions/workflows/build_and_install.yml/badge.svg?branch=master&event=push)](https://github.com/stancld/rust-unidecode/actions/workflows/build_and_install.yml)
+[![Python version](https://img.shields.io/badge/python-3.10%7C3.11%7C3.12%7C3.13-blue)](https://img.shields.io/badge/python-3.10%7C3.11%7C3.12%7C3.13-blue)
+[![Tests](https://github.com/stancld/rust-unidecode/actions/workflows/tests.yml/badge.svg?branch=master&event=push)](https://github.com/stancld/rust-unidecode/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/stancld/rust-unidecode/blob/master/LICENSE)
+
+______________________________________________________________________
+</div>
+
+
+
+This repo is a fork of the [`rust-unicode`](https://github.com/chowdhurya/rust-unidecode)
+repository and transports the original Rust implementation to be used with Python.
+It also implements a couple of source code changes to hasten a translation of
+ASCII family of characters and makes this implementation on par with [Python unidecode
+implementation](https://github.com/avian2/unidecode) on this set of characters.
+
+The overall result is this package should provide you with the same output
+as the aforementioned Python implementation. However, this package is much faster on a translation of
+non-ASCII characters (>~3x) and comparable to slightly slowe on ASCII characters (in a degree of small percents) on average based on
+the [`benchmark/speed_benchmark.py`](./benchmark/speed_benchmark.py) benchmark (depending on caching, etc.; sometimes, a translation of
+non-ASCII characters provides you with a speedup of up to >10x). The benchmarks were run on Python 3.13.
+
+## License
+
+This project is licensed under the MIT License.
+
+**Important Note:** Unlike the original Python `unidecode` package, which is distributed under the restrictive GNU General Public License (GPL), `fast-unidecode` is released under the permissive MIT license. This makes it suitable for use in a wider range of projects, including commercial and closed-source applications. For SaaS (Software as a Service) companies, using a GPL-licensed library can create an obligation to release your own source code, a requirement that the MIT license does not have.
+
+Benchmark code is not a part of the distributed package.
+
+## Installation
+
+```bash
+pip install fast_unidecode
+```
+
+<details>
+  <summary> Installation from source </summary>
+
+First, you need to build the package using [`maturin`](https://github.com/PyO3/maturin),
+then install `fast_unidecode` simply with `pip`.
+
+```bash
+maturin build --release
+pip install target/wheels/fast_unidecode...
+```
+</details>
+
+## Usage
+
+```python
+>>> from fast_unidecode import unidecode
+
+>>> print(unidecode("Æneid"))
+'AEneid'
+
+>>> print(unidecode("北亰"))
+'Bei Jing'
+```
+
+
+<details>
+  <summary> rust-unidecode (Original README.md) </summary>
 
 [Documentation](https://docs.rs/unidecode/)
 
@@ -55,3 +116,5 @@ There are, however, some things you should keep in mind:
 
 This information was paraphrased from the original `Text::Unidecode`
 documentation.
+
+</details>

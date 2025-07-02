@@ -1,0 +1,87 @@
+name: PyPI Release
+
+# https://help.github.com/en/actions/reference/events-that-trigger-workflows
+on:
+  push:
+    branches:
+      - pyo3
+  release:
+    types: [published]
+
+jobs:
+  build-wheels-manylinux:
+    runs-on: ubuntu-24.04
+    name: Build wheels for manylinux
+    container: quay.io/pypa/manylinux_2_28_x86_64
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Install Maturin and Build manylinux2014 packages
+        run: sh build_manylinux_wheels.sh
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: manylinux-wheels
+          path: ./target/wheels/*whl
+
+  build-wheels-macos:
+    runs-on: ${{ matrix.os }}
+    name: Build wheels for MacOS
+    strategy:
+      matrix:
+        os: [macOS-13]
+        python: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          architecture: x64
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - uses: messense/maturin-action@v1
+
+      - name: Build ${{ matrix.os }} package on 64bit (${{ matrix.python-version }})
+        run: maturin build --release
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-wheels-${{ matrix.os }}-${{ matrix.python }}
+          path: ./target/wheels/*whl
+
+  publish-to-pypi:
+    name: Publish to PyPI
+    runs-on: ubuntu-24.04
+    needs: [build-wheels-manylinux, build-wheels-macos]
+    if: github.event_name == 'release' && github.event.action == 'published'
+
+    steps:
+      - name: Download all wheels
+        uses: actions/download-artifact@v4
+        with:
+          path: dist/
+
+      - name: Prepare wheels for publishing
+        run: |
+          # The download-artifact action creates sub-directories for each artifact.
+          # We need to move the wheels from the sub-directories to the top-level dist/ directory
+          # and then remove the empty sub-directories.
+          find dist -type f -name "*.whl" -exec mv -t dist/ {} +
+          find dist -mindepth 1 -maxdepth 1 -type d -exec rm -r {} +
+
+      - name: List downloaded wheels
+        run: ls -R dist
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
