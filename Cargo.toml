@@ -1,6 +1,6 @@
 [package]
 name = "fast_unidecode"
-version = "1.0.3"
+version = "1.0.3-post1"
 edition = "2024"
 authors = ["Daniel Stancl <daniel.stancl@gmail.com>", "Amit Chowdhury <amitc97@gmail.com>"]
 description = "Provides pure ASCII transliterations of Unicode strings."
