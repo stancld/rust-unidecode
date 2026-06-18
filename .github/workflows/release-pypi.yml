@@ -48,7 +48,7 @@ jobs:
     name: Build wheels for MacOS
     strategy:
       matrix:
-        os: [macOS-13, macOS-15]
+        os: [macOS-15]
         python: ["3.11", "3.12", "3.13", "3.14"]
 
     steps:
