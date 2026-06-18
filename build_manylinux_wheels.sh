@@ -4,7 +4,7 @@ set -ex
 curl https://sh.rustup.rs -sSf | sh -s -- -y
 export PATH="$HOME/.cargo/bin:$PATH"
 
-for PYBIN in /opt/python/{cp310-cp310,cp311-cp311,cp312-cp312,cp313-cp313}/bin; do
+for PYBIN in /opt/python/{cp311-cp311,cp312-cp312,cp313-cp313,cp314-cp314}/bin; do
     export PYTHON_SYS_EXECUTABLE="$PYBIN/python"
 
     ${PYTHON_SYS_EXECUTABLE} -m pip install maturin
