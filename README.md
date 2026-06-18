@@ -3,7 +3,7 @@
 <div align="center">
 
 [![Build](https://github.com/stancld/rust-unidecode/actions/workflows/build_and_install.yml/badge.svg?branch=pyo3&event=push)](https://github.com/stancld/rust-unidecode/actions/workflows/build_and_install.yml)
-[![Python version](https://img.shields.io/badge/python-3.11%7C3.12%7C3.13-blue)](https://img.shields.io/badge/python-3.11%7C3.12%7C3.13-blue)
+[![Python version](https://img.shields.io/pypi/pyversions/fast_unidecode)](https://pypi.org/project/fast_unidecode/)
 [![Tests](https://github.com/stancld/rust-unidecode/actions/workflows/tests.yml/badge.svg?branch=pyo3&event=push)](https://github.com/stancld/rust-unidecode/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/stancld/rust-unidecode/blob/pyo3/LICENSE)
 
